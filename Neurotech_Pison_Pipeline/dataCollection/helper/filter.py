@@ -14,11 +14,11 @@ def bandstop_filter(data, lowcut,highcut, fs=1000):
 
 def filter_channels(data, fs):
     ret = []
-    for d in data.T:
+    for d in data:
         d = highpass_filter(d, 20, fs)
         d = bandstop_filter(d, 58,62, fs)
         d = bandstop_filter(d, 118,122, fs)
         d = bandstop_filter(d, 178,182, fs)
         ret.append(d)
     
-    return ret
+    return np.array(ret)

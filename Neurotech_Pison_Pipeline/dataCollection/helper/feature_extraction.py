@@ -67,7 +67,6 @@ def calculate_hjorth_parameters(data):
 
 def feature_extraction(data):
     features = []
-    data = data.reshape(4,-1)
     for i in range(4):
         wl = WL(data[i])
         mav = MAV(data[i])
@@ -78,5 +77,6 @@ def feature_extraction(data):
         mf = MF(data[i], 1000)
         pf = PF(data[i], 1000)
         activity, mobility, complexity  = calculate_hjorth_parameters(data[i])
-        features.append([wl, mav, ssc, zc, var, rms, mf, pf, activity, mobility, complexity])
-    return features
+        features.extend([wl, mav, ssc, zc, var, rms, mf, pf, activity, mobility, complexity])
+    
+    return np.array(features)
