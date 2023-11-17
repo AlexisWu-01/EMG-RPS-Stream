@@ -65,6 +65,14 @@ def calculate_hjorth_parameters(data):
 
     return activity, mobility, complexity
 
+def BP(data, fs, band=(20,450)):
+    """Calculates the band power """
+    freqs, psd = welch(data, fs, window='hann', nperseg=1024, scaling='density')
+    freq_mask = (freqs >= band[0]) & (freqs <= band[1])
+    bp = np.trapz(psd[freq_mask], freqs[freq_mask])
+    return bp
+
+
 def feature_extraction(data):
     features = []
     for i in range(4):
@@ -77,6 +85,7 @@ def feature_extraction(data):
         mf = MF(data[i], 1000)
         pf = PF(data[i], 1000)
         activity, mobility, complexity  = calculate_hjorth_parameters(data[i])
-        features.extend([wl, mav, ssc, zc, var, rms, mf, pf, activity, mobility, complexity])
+        bp = BP(data[i], 1000)
+        features.extend([wl, mav, ssc, zc, var, rms, mf, pf, activity, mobility, complexity, bp])
     
     return np.array(features)
