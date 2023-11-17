@@ -7,7 +7,6 @@ from helper.onset import get_onset_data
 from helper.NN import EMGClassifier
 import matplotlib.pyplot as plt
 import torch
-
 class RunPythonModel:
     def __init__(self, modelPath):
         filename = modelPath.split('/')[-1].split('.')[0]
@@ -76,4 +75,4 @@ class RunPythonModel:
             pred = int(self.model.predict(features)[0])
         
         print(f"prediction: {['rock', 'paper', 'scissors'][pred]}")
-        return int(pred+1)
+        return int(pred+1), features

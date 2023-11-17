@@ -9,6 +9,8 @@ import time
 import numpy as np
 import atexit
 import argparse
+from helper.NN import live_training_update
+
 
 """
 Helper functions, don't worry about these!
@@ -59,6 +61,7 @@ if __name__=='__main__':
         from runPythonModel import RunPythonModel 
         pml = RunPythonModel(args.pythonmodel)
         runModel = lambda data: pml.get_rps(data)
+        # Initialize variables
 
     recv = None
     clear()
@@ -104,7 +107,8 @@ if __name__=='__main__':
             print('No marker stream found. Make sure there is a computer with a marker stream running')
             sys.exit(0)
         clear() 
-
+    inputs = []
+    labels = []
     while True:
         if args.online:
             marker, timestamp = recv.pull_sample()
@@ -129,8 +133,18 @@ if __name__=='__main__':
             time.sleep(1.6)
             data = wrapper.get_data_from(tstamp_start)
             #print(np.shape(data[0:1400,:]))
-            inference = runModel(data[0:1400,:])
-            
+            inference, feature_data = runModel(data[0:1400,:])
+        
+            if len(inputs) < 16:
+                actual_label = int(input('What was the gesture? (1) for rock, (2) for paper, (3) for scissors'))-1
+                if actual_label  in [0,1,2]:
+                    inputs.append(feature_data)
+                    labels.append(actual_label)
+            else:
+                print('Training model')
+                live_training_update(inputs, labels)
+                inputs = []
+                labels = []
             inferred_out.push_sample([inference])
             print(f'Inference: {inference}')
         elif marker==99:
