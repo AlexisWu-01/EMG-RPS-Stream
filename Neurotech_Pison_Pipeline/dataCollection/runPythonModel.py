@@ -9,6 +9,13 @@ import matplotlib.pyplot as plt
 import torch
 
 class RunPythonModel:
+    """
+   Class to run the python model.
+   Methods:
+         __init__: Takes in the path to the model and loads it. It will also determine if the model is a neural network, and if the model is using selected features.
+         select_features: Takes in data and selects the top 25 features from the random forest feature importance. (If we choose the random forest model with selected features.)
+         get_rps: Takes in data, process it and returns rock, paper, or scissors after putting the data through your model.
+    """
     def __init__(self, modelPath):
         filename = modelPath.split('/')[-1].split('.')[0]
         if modelPath.endswith('pth'):
@@ -52,19 +59,12 @@ class RunPythonModel:
         data = np.array(data).reshape(4,1400)
         filtered_data = filter_channels(data, 1000)
         onset_data = get_onset_data(np.array(filtered_data))
-        # fig, ax = plt.subplots(3)
-        # ax[0].plot(data[0])
-        # ax[1].plot(filtered_data[0])
-        # ax[2].plot(onset_data[0], color='r')
-        # plt.show()
         features = feature_extraction(onset_data)
         if self.select:
             features = self.select_features(features)
 
         features = features.reshape(1,-1)
         features = self.scaler.transform(features)
-
-
 
         if self.NN:
             self.model.eval()
