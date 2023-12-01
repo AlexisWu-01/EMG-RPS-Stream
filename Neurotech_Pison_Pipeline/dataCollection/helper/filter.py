@@ -1,3 +1,9 @@
+""" 
+Project: Neurotech Pison Rock Paper Scissors Gesture Recognition
+Author: Alexis (Xinyi) Wu
+
+This file contains functions to filter the signal.
+"""
 from scipy.signal import butter, filtfilt
 import numpy as np
 

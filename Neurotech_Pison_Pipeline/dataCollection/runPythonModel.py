@@ -1,3 +1,9 @@
+""" 
+Project: Neurotech Pison Rock Paper Scissors Gesture Recognition
+Author: Alexis (Xinyi) Wu
+
+This file contains the class to run the python model from Sam's stream.
+"""
 import joblib
 import numpy as np
 import pandas as pd
@@ -34,6 +40,9 @@ class RunPythonModel:
             self.select = False
 
     def select_features(self,data, num_features=25):
+        """
+        Function to take in data and select the top 25 features from the random forest feature importance ranking.
+        """
         ranked_features = pd.read_csv('models/RF_feature_importance.csv',index_col=0)
         feature_set = ranked_features[:num_features].index.to_numpy()
         columns = [

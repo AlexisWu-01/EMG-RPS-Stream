@@ -1,3 +1,9 @@
+""" 
+Project: Neurotech Pison Rock Paper Scissors Gesture Recognition
+Author: Alexis (Xinyi) Wu
+
+This file contains functions to extract features from the signal.
+"""
 import numpy as np
 from scipy.signal import welch
 
